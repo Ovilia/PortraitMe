@@ -5,7 +5,7 @@
  */
 
 PM = {
-    VERTICE_CNT: 39,
+    VERTICE_CNT: 77,
     
     // scale arr to be between 0 and 1
     // scale xArr if yArr is undeifined, scale both using max and min of both

@@ -27,7 +27,7 @@ PM.asm = function(srcImg, callback) {
                     if (data[i]) {
                         var pair = data[i].split(' ');
                         x.push(parseInt(pair[0], 10));
-                        y.push(parseInt(pair[1], 11));
+                        y.push(parseInt(pair[1], 10));
                     }
                 }
                 PM.normalArray(x, y);
