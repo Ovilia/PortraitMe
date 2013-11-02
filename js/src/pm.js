@@ -8,44 +8,23 @@ PM = {
     VERTICE_CNT: 77,
     
     // scale arr to be between 0 and 1
-    // scale xArr if yArr is undeifined, scale both using max and min of both
-    // if yArr is defined
     // (x - min(x)) / (max(x) - min(x))
-    normalArray: function(xArr, yArr) {
+    normalArray: function(arr) {
         var min = Infinity;
         var max = -Infinity;
-        for (var i in xArr) {
-            if (xArr[i]) {
-                if (xArr[i] > max) {
-                    max = xArr[i];
+        for (var i in arr) {
+            if (arr[i]) {
+                if (arr[i] > max) {
+                    max = arr[i];
                 }
-                if (xArr[i] < min) {
-                    min = xArr[i];
-                }
-            }
-        }
-        if (yArr !== undefined) {
-            for (var i in yArr) {
-                if (yArr[i]) {
-                    if (yArr[i] > max) {
-                        max = yArr[i];
-                    }
-                    if (yArr[i] < min) {
-                        min = yArr[i];
-                    }
+                if (arr[i] < min) {
+                    min = arr[i];
                 }
             }
         }
-        for (var i in xArr) {
-            if (xArr[i]) {
-                xArr[i] = (xArr[i] - min) / (max - min);
-            }
-        }
-        if (yArr !== undefined) {
-            for (var i in yArr) {
-                if (yArr[i]) {
-                    yArr[i] = (yArr[i] - min) / (max - min);
-                }
+        for (var i in arr) {
+            if (arr[i]) {
+                arr[i] = (arr[i] - min) / (max - min);
             }
         }
     },
@@ -57,6 +36,21 @@ PM = {
             if (arr[i]) {
                 arr[i] = arr[i] * (max - min) + min;
             }
+        }
+    },
+    
+    // get min and max of array
+    rangeArray: function(arr) {
+        var copy = arr.slice(0).sort(function(a, b) {
+            return a - b;
+        });
+        if (arr.length > 0) {
+            return {
+                min: copy[0],
+                max: copy[copy.length - 1]
+            };
+        } else {
+            return null;
         }
     }
 };

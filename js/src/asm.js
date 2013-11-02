@@ -30,7 +30,15 @@ PM.asm = function(srcImg, callback) {
                         y.push(parseInt(pair[1], 10));
                     }
                 }
-                PM.normalArray(x, y);
+                
+                var xRange = PM.rangeArray(x);
+                var yRange = PM.rangeArray(y);
+                var ratio = (yRange.max - yRange.min === 0) ? 1
+                        : (xRange.max - xRange.min) / (yRange.max - yRange.min);
+                
+                PM.scaleArray(x, -ratio / 2, ratio / 2);
+                PM.scaleArray(y, -0.5, 0.5);
+                
                 callback(x, y);
             } else {
                 console.log('Error loading data file.');
