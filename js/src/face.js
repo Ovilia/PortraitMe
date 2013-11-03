@@ -22,19 +22,34 @@ PM.Face = function(xArr, yArr) {
     for (var e in this.edgeId) {
         var lastVid = null;
         for (var i = 0; i < this.edgeId[e].length; ++i) {
+            // continue with last path
             if (lastVid !== null) {
-                this.edges.push([lastVid, this.edgeId[e][i][0]]);
+                this.edges.push(new PM.Edge(
+                        new PM.Vertex(xArr[lastVid], yArr[lastVid]),
+                        new PM.Vertex(xArr[this.edgeId[e][i][0]], 
+                        yArr[this.edgeId[e][i][0]])));
             }
+            // this path
             for (var j = this.edgeId[e][i][0]; j < this.edgeId[e][i][1]; ++j) {
-                if (this.edgeType[j] !== this.EDGE_TYPE.NONE) {
-                    this.edges.push([j, j + 1]);
+                if (this.vertexType[j] !== PM.Vertex.prototype.TYPE.NONE) {
+                    this.edges.push(new PM.Edge(
+                            new PM.Vertex(xArr[j], yArr[j]), 
+                            new PM.Vertex(xArr[j + 1], yArr[j + 1])));
                 }
             }
+            lastVid = this.edgeId[e][i][1];
         }
-        var type = this.edgeType[this.edgeId[e][--i][1]];
-        if (type == this.EDGE_TYPE.CORDER || type == this.EDGE_TYPE.SMOOTH
-                || type == this.EDGE_TYPE.SYMMETRIC) {
-            this.edges.push([this.edgeId[e][i][1], this.edgeId[e][i][0]]);
+        // loop this path
+        var type = this.vertexType[this.edgeId[e][--i][1]];
+        if (this.edgeId[e][i][2] === 'c' 
+                && (type == PM.Vertex.prototype.TYPE.CORDER
+                || type == PM.Vertex.prototype.TYPE.SMOOTH
+                || type == PM.Vertex.prototype.TYPE.SYMMETRIC)) {
+            this.edges.push(new PM.Edge(
+                    new PM.Vertex(xArr[this.edgeId[e][i][1]], 
+                    yArr[this.edgeId[e][i][1]]), 
+                    new PM.Vertex(xArr[this.edgeId[e][i][0]],
+                    yArr[this.edgeId[e][i][0]])));
             lastVid = this.edgeId[e][i][1];
         }
     }
@@ -44,15 +59,7 @@ PM.Face = function(xArr, yArr) {
 PM.Face.prototype = {
     VERTICE_CNT: 77,
     
-    EDGE_TYPE: {
-        CORDER: 0,
-        SMOOTH: 1,
-        SYMMETRIC: 2,
-        HALF: 3,
-        NONE: 4
-    },
-    
-    edgeType: [
+    vertexType: [
         1,   //  0, LTemple
         1,   //  1, LJaw01
         1,   //  2, LJawNoseline
@@ -107,7 +114,7 @@ PM.Face.prototype = {
         1,   // 51, LNostrilTop
         1,   // 52, CNoseTip
         1,   // 53, RNostrilTop
-        4,   // 54, RNoseSide
+        0,   // 54, RNoseSide
         3,   // 55, RNostrilBot
         1,   // 56, CNoseBase
         3,   // 57, LNostrilBot
@@ -132,14 +139,21 @@ PM.Face.prototype = {
         1    // 76, LMouth76
     ],
     
+    // 'c' for making circle, 'l' for making line
     edgeId: {
-        Face:       [[0,  15]],
-        LEyeBrow:   [[16, 21]],
-        REyeBrow:   [[22, 27]],
-        LEye:       [[30, 37]],
-        REye:       [[40, 47]],
-        TopMouth:   [[59, 68]],
-        BotMouth:   [[59, 59], [69, 71], [65, 65], [72, 76]]
+        Face:       [[0,  15, 'c']],
+        
+        LEyeBrow:   [[16, 21, 'c']],
+        REyeBrow:   [[22, 27, 'c']],
+        LEye:       [[30, 37, 'c']],
+        REye:       [[40, 47, 'c']],
+        
+        Nose:       [[48, 48, 'l'], [54, 55, 'l'], [53, 53, 'l'], [56, 56, 'l'], [51, 51, 'l'], [57, 57, 'l'], [58, 58, 'l'],
+                    [50, 50, 'l']],
+        
+        TopMouth:   [[59, 68, 'c']],
+        BotMouth:   [[59, 59, 'l'], [69, 71, 'c'], [65, 65, 'l'], [72, 76, 'l'],
+                    [59, 59]]
         // TODO
     }
 }

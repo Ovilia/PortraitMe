@@ -2,7 +2,7 @@ var gb = {
     two: null,
     face: null,
     
-    FACE_RATIO: 500
+    FACE_RATIO: 400
 };
 
 window.onload = function() {
@@ -24,10 +24,10 @@ function renderFace() {
     }
     for (var i = 0; i < gb.face.edges.length; ++i) {
         var e = gb.face.edges[i];
-        gb.two.makeLine(getScreenX(gb.face.vertice[e[0]].x),
-                getScreenY(gb.face.vertice[e[0]].y),
-                getScreenX(gb.face.vertice[e[1]].x),
-                getScreenY(gb.face.vertice[e[1]].y));
+        gb.two.makeLine(getScreenX(e.v1.x),
+                getScreenY(e.v1.y),
+                getScreenX(e.v2.x),
+                getScreenY(e.v2.y));
     }
     gb.two.update();
 }
