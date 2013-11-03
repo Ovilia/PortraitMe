@@ -1,6 +1,8 @@
 var gb = {
     two: null,
-    face: null
+    face: null,
+    
+    FACE_RATIO: 500
 };
 
 window.onload = function() {
@@ -15,15 +17,27 @@ window.onload = function() {
     });
 }
 
-function renderFace(face) {
-    var faceRatio = 500;
-    var a = 0;
-    for (var i = 0; i < PM.VERTICE_CNT; ++i) {
-        gb.two.makeCircle(
-                face.vertice[i].x * faceRatio + window.innerWidth / 2,
-                face.vertice[i].y * faceRatio + window.innerHeight / 2,
-                2);
-        a += (face.vertice[i].x - 0.5);
+function renderFace() {
+    for (var i = 0; i < gb.face.vertice.length; ++i) {
+        gb.two.makeCircle(getScreenX(gb.face.vertice[i].x),
+                getScreenY(gb.face.vertice[i].y), 2)//.linewidth = i * 2 + 1;
+    }
+    for (var i = 0; i < gb.face.edges.length; ++i) {
+        var e = gb.face.edges[i];
+        gb.two.makeLine(getScreenX(gb.face.vertice[e[0]].x),
+                getScreenY(gb.face.vertice[e[0]].y),
+                getScreenX(gb.face.vertice[e[1]].x),
+                getScreenY(gb.face.vertice[e[1]].y));
     }
     gb.two.update();
+}
+
+// get position on screen with position in face
+function getScreenX(x) {
+    return x * gb.FACE_RATIO + window.innerWidth / 2;
+}
+
+// get position on screen with position in face
+function getScreenY(y) {
+    return y * gb.FACE_RATIO + window.innerHeight / 2;
 }

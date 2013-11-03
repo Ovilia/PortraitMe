@@ -5,8 +5,6 @@
  */
 
 PM = {
-    VERTICE_CNT: 77,
-    
     // scale arr to be between 0 and 1
     // (x - min(x)) / (max(x) - min(x))
     normalArray: function(arr) {
@@ -33,7 +31,7 @@ PM = {
     scaleArray: function(arr, min, max) {
         PM.normalArray(arr);
         for (var i in arr) {
-            if (arr[i]) {
+            if (arr[i] !== undefined) {
                 arr[i] = arr[i] * (max - min) + min;
             }
         }
